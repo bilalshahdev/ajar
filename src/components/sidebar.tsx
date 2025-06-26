@@ -15,9 +15,11 @@ import { sidebarMenu } from "@/config/menu";
 import { Power } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NavMenuItem } from "@/types";
 import Brand from "./brand";
+import GradientIcon from "./gradient-icon";
+import { useLocale } from "next-intl";
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -25,9 +27,9 @@ export default function Sidebar() {
   const { openMobile, setOpenMobile, isMobile } = useSidebar();
 
   const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false);
-
+const locale = useLocale();
   const isMenuActive = (path: string) => {
-    return pathname === path;
+    return pathname === `/${locale}${path == "/" ? "" : path}`;
   };
 
   useEffect(() => {
@@ -56,16 +58,20 @@ export default function Sidebar() {
       <SidebarContent className="flex flex-col justify-between bg-background">
         <SidebarGroup>
           <SidebarMenu className="flex flex-col gap-2">
-            {sidebarMenu.map((item: NavMenuItem) => (
-              <SidebarMenuItem key={item.path}>
+            {sidebarMenu.map(({ icon: Icon, path, title }: NavMenuItem) => (
+              <SidebarMenuItem key={path}>
                 <SidebarMenuButton
-                  tooltip={item.title}
-                  isActive={isMenuActive(item.path)}
+                  tooltip={title}
+                  isActive={isMenuActive(path)}
                   asChild
                 >
-                  <Link href={item.path}>
-                    <item.icon className={isMenuActive(item.path) ? "text-aqua" : "text-foreground"} />
-                    <span>{item.title}</span>
+                  <Link href={path} className="flex items-center gap-2">
+                    {isMenuActive(path) ? (
+                      <GradientIcon icon={<Icon />} />
+                    ) : (
+                      <Icon size={20} className="text-foreground/50" />
+                    )}
+                    <span>{title}</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
