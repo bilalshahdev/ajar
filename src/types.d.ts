@@ -1,4 +1,21 @@
 import { IconType } from "react-icons/lib";
+// types/leaflet-draw.d.ts
+import "leaflet";
+declare module "leaflet" {
+  namespace Control {
+    class Draw extends Control {
+      constructor(options?: any);
+    }
+  }
+
+  namespace Draw {
+    namespace Event {
+      const CREATED: string;
+      const EDITED: string;
+      const DELETED: string;
+    }
+  }
+}
 
 interface NavMenuItem {
   title: string;
@@ -9,7 +26,6 @@ interface NavMenuItem {
 type MenuItem = {
   href: string;
   label: string;
-  icon: ElementType;
 };
 
 type DashboardStat = {
@@ -81,4 +97,58 @@ interface UserDetailsFromLogin {
 interface LoginSuccessData {
   token: string;
   user: UserDetailsFromLogin;
+}
+
+interface Zone {
+  _id: string;
+  name: string;
+  country: string;
+  currency: string;
+  timeZone: string;
+  language: string;
+  radius: number;
+  latlong: number[];
+  thumbnail: string;
+  status: string;
+  adminNotes: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface Category {
+  _id: string;
+  name: string;
+  description?: string;
+  categoryId?: string;
+  type: string;
+  slug: string;
+  thumbnail?: string;
+  icon?: string;
+  zoneId: string;
+  status: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// types/ZoneSettings.ts
+
+export type CommissionType = "fixed" | "percentage";
+
+export interface Commission {
+  type: CommissionType;
+  leaser: number | { min: number; max: number };
+  renter: number | { min: number; max: number };
+}
+
+export interface SubcategorySettings {
+  subcategory: string;
+  fields: string[];
+  commission: Commission;
+  tax: number;
+  expiry: string; // ISO string for date
+}
+
+export interface ZoneSettingsFormData {
+  zone: string;
+  subcategories: SubcategorySettings[];
 }

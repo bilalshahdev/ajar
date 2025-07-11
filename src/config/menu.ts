@@ -1,32 +1,32 @@
-import { NavMenuItem, MenuItem } from "@/types";
-import { Briefcase, Home, Info, Mail } from "lucide-react";
+import { MenuItem, NavMenuItem } from "@/types";
 import {
-  FaTachometerAlt,
-  FaUserCog,
-  FaShapes,
-  FaVectorSquare,
-  FaUsers,
+  FaBuilding,
+  FaChartBar,
   FaClipboardList,
   FaMoneyCheckAlt,
-  FaChartBar,
-  FaBuilding,
-  FaQuestionCircle,
+  FaQuestion,
+  FaShapes,
+  FaTachometerAlt,
+  FaUserCog,
+  FaUsers,
+  FaVectorSquare,
 } from "react-icons/fa";
+import { PiQuestionMarkFill } from "react-icons/pi";
 
 export const sidebarMenu: NavMenuItem[] = [
   { title: "Dashboard", path: "/", icon: FaTachometerAlt },
-  { title: "Field Management", path: "/field-management", icon: FaUserCog },
+  { title: "Zone Management", path: "/zone-management", icon: FaVectorSquare },
   {
     title: "Category Management",
     path: "/category-management",
     icon: FaShapes,
   },
-  { title: "Zone Management", path: "/zone-management", icon: FaVectorSquare },
+  { title: "Field Management", path: "/field-management", icon: FaUserCog },
   { title: "User Verification", path: "/user-verification", icon: FaUsers },
   { title: "Rental Listing", path: "/rental-listing", icon: FaClipboardList },
   {
-    title: "Financial Settings",
-    path: "/financial-settings",
+    title: "Business Settings",
+    path: "/business-settings",
     icon: FaMoneyCheckAlt,
   },
   {
@@ -35,14 +35,39 @@ export const sidebarMenu: NavMenuItem[] = [
     icon: FaChartBar,
   },
   { title: "Administration", path: "/administration", icon: FaBuilding },
-  { title: "Help & Support", path: "/help-support", icon: FaQuestionCircle },
+  { title: "Help & Support", path: "/help-support", icon: FaQuestion },
+  {
+    title: "FAQs",
+    path: "/faqs",
+    icon: PiQuestionMarkFill,
+  },
 ];
 
 // Navigation items with icons
 export const navMenu: MenuItem[] = [
-  { href: "/", label: "Home", icon: Home },
-  { href: "/skills", label: "skills", icon: Info },
-  { href: "/services", label: "services", icon: Briefcase },
-  { href: "/projects", label: "projects", icon: Briefcase },
-  { href: "/contact", label: "contact", icon: Mail },
+  { href: "#", label: "leaser" },
+  { href: "#", label: "reports" },
+  { href: "#", label: "blocked" },
+  { href: "#", label: "listing" },
+  { href: "#", label: "settings" },
+];
+
+// export const navMenu: MenuItem[] = [
+//   { href: "/", label: "leaser" },
+//   { href: "/reports", label: "reports" },
+//   { href: "/blocked", label: "blocked" },
+//   { href: "/listing", label: "listing" },
+//   { href: "/settings", label: "settings" },
+// ];
+
+export const businessNavMenu: MenuItem[] = [
+  { href: "/", label: "Business Information" },
+  { href: "/payment-methods", label: "Payment Methods" },
+  { href: "/sms-module", label: "SMS Module" },
+  { href: "/mail-config", label: "Mail Config" },
+  { href: "/map-apis", label: "Map API’s" },
+  { href: "/social-logins", label: "Socials Logins" },
+  { href: "/recaptcha", label: "Recaptcha" },
+  { href: "/firebase", label: "Firebase" },
+  // { href: "/storage", label: "Storage" },
 ];
