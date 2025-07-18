@@ -1,4 +1,21 @@
 import { IconType } from "react-icons/lib";
+// types/leaflet-draw.d.ts
+import "leaflet";
+declare module "leaflet" {
+  namespace Control {
+    class Draw extends Control {
+      constructor(options?: any);
+    }
+  }
+
+  namespace Draw {
+    namespace Event {
+      const CREATED: string;
+      const EDITED: string;
+      const DELETED: string;
+    }
+  }
+}
 
 interface NavMenuItem {
   title: string;
@@ -9,7 +26,6 @@ interface NavMenuItem {
 type MenuItem = {
   href: string;
   label: string;
-  icon: ElementType;
 };
 
 type DashboardStat = {
@@ -25,7 +41,6 @@ interface User {
   phone: string;
   email: string;
   joinedDate: Date;
-  isBlocked: boolean;
   status: string;
 }
 
@@ -82,3 +97,116 @@ interface LoginSuccessData {
   token: string;
   user: UserDetailsFromLogin;
 }
+
+interface Zone {
+  _id: string;
+  name: string;
+  country: string;
+  currency: string;
+  timeZone: string;
+  language: string;
+  radius: number;
+  latlong: number[];
+  thumbnail: string;
+  status: string;
+  adminNotes: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface Category {
+  _id: string;
+  name: string;
+  description?: string;
+  categoryId?: string;
+  type: string;
+  slug: string;
+  thumbnail?: string;
+  icon?: string;
+  zoneId: string;
+  status: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// types/ZoneSettings.ts
+
+export type CommissionType = "fixed" | "percentage";
+
+export interface Commission {
+  type: CommissionType;
+  leaser: number | { min: number; max: number };
+  renter: number | { min: number; max: number };
+}
+
+export interface SubcategorySettings {
+  subcategory: string;
+  fields: string[];
+  commission: Commission;
+  tax: number;
+  expiry: string; // ISO string for date
+}
+
+export interface ZoneSettingsFormData {
+  zone: string;
+  subcategories: SubcategorySettings[];
+}
+
+export interface RentalUser {
+  _id: string;
+  name: string;
+  profilePic: string;
+}
+
+export interface Subcategory {
+  name: string;
+  category: {
+    name: string;
+  };
+}
+
+interface RentalRequest {
+  _id: string;
+  name: string;
+  description: string;
+  price: number;
+  images: string[];
+  date: string;
+  status: string;
+  subcategory: Subcategory;
+  leaser: RentalUser;
+  renter: RentalUser;
+}
+
+type TicketStatus = "active" | "pending" | "rejected";
+type Priority = "Low" | "Medium" | "High";
+
+interface Ticket {
+  _id: string;
+  sender: string;
+  email: string;
+  subject: string;
+  description?: string;
+  createdAt: string; // Date of complaint
+  status: TicketStatus;
+  group?: string;
+  assignedTo?: string;
+  priority?: Priority;
+  response?: string;
+  complainant?: {
+    name: string;
+    profilePic: string;
+  };
+}
+
+type RefundStatus = "pending" | "approved" | "rejected";
+
+interface RefundRequest {
+  _id: string;
+  listing: string;
+  user: string;
+  dateSubmitted: string;
+  amount: number;
+  status: RefundStatus;
+}
+
