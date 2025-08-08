@@ -1,82 +1,71 @@
 import { DashboardStat } from "@/types";
-import { HiMiniCursorArrowRipple, HiUsers } from "react-icons/hi2";
-import { IoMdCart } from "react-icons/io";
+import { BiCategoryAlt } from "react-icons/bi";
+import { FaHandshake, FaMapMarkedAlt } from "react-icons/fa";
+import { HiUsers } from "react-icons/hi2";
+import { MdOutlineRequestPage } from "react-icons/md";
+import { RiMoneyDollarCircleFill } from "react-icons/ri";
+import StatsCard from "../cards/stats-card";
+import { Stats } from "@/services/stats";
 
-import { RiFileList2Fill } from "react-icons/ri";
+const DashboardStats = ({ stats }: { stats: Stats }) => {
+  const {
+    totalUsers,
+    totalLeasers,
+    totalCategories,
+    totalZones,
+    bookingCount,
+    totalEarning,
+  } = stats || ({} as Stats);
 
-const DashboardStats = () => {
   const dashboardStats: DashboardStat[] = [
     {
-      title: "Total Ads",
-      value: 486,
-      icon: RiFileList2Fill,
+      title: "Users",
+      value: totalUsers,
+      icon: HiUsers,
       bgColor: "bg-rose-500",
     },
     {
-      title: "Paid Ads",
-      value: 14,
-      icon: RiFileList2Fill,
+      title: "Zones",
+      value: totalZones,
+      icon: FaMapMarkedAlt,
       bgColor: "bg-orange-500",
     },
     {
-      title: "Free Ads",
-      value: 43,
-      icon: RiFileList2Fill,
+      title: "Categories",
+      value: totalCategories,
+      icon: BiCategoryAlt,
       bgColor: "bg-pink-500",
     },
     {
-      title: "Total Users",
-      value: 57,
-      icon: HiUsers,
+      title: "Leasers",
+      value: totalLeasers,
+      icon: FaHandshake,
+      bgColor: "bg-green-500",
+    },
+    {
+      title: "Total Earning",
+      value: totalEarning,
+      icon: RiMoneyDollarCircleFill,
+      bgColor: "bg-yellow-500",
+    },
+    {
+      title: "Bookings",
+      value: bookingCount,
+      icon: MdOutlineRequestPage,
       bgColor: "bg-blue-500",
-    },
-    {
-      title: "Admin Users",
-      value: 2,
-      icon: HiUsers,
-      bgColor: "bg-blue-500",
-    },
-    {
-      title: "Web Users",
-      value: 21,
-      icon: HiUsers,
-      bgColor: "bg-blue-500",
-    },
-    {
-      title: "Total Exchange to Buy Post",
-      value: 56,
-      icon: IoMdCart,
-      bgColor: "bg-rose-500",
-    },
-    {
-      title: "Total Instant Buy Post",
-      value: 42,
-      icon: HiMiniCursorArrowRipple,
-      bgColor: "bg-orange-500",
-    },
-    {
-      title: "Total Given Away Post",
-      value: 42,
-      icon: HiMiniCursorArrowRipple,
-      bgColor: "bg-red-500",
     },
   ];
-
+  console.log(dashboardStats)
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      {dashboardStats.map((stat) => (
-        <div
-          key={stat.title}
-          className={`p-4 rounded-lg bg-background shadow flex items-center justify-between`}
-        >
-          <div>
-            <p className="text-sm text-muted-foreground">{stat.title}</p>
-            <h3 className="text-lg font-semibold">{stat.value}</h3>
-          </div>
-          <div className={`p-4 rounded-full text-white ${stat.bgColor}`}>
-            <stat.icon size={20} />
-          </div>
-        </div>
+      {dashboardStats?.map(({ title, value, icon: Icon, bgColor }) => (
+        <StatsCard
+          key={title}
+          title={title}
+          value={value?.toString()}
+          icon={<Icon />}
+          bgColor={bgColor}
+        />
       ))}
     </div>
   );

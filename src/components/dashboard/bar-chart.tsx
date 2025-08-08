@@ -1,15 +1,4 @@
 "use client";
-import { BiLineChart } from "react-icons/bi";
-import { H4, Label, Small } from "../typography";
-import ChartCard from "./chart-card";
-
-import {
-  Bar,
-  CartesianGrid,
-  LabelList,
-  BarChart as RechartsBarChart,
-  XAxis,
-} from "recharts";
 
 import {
   ChartConfig,
@@ -17,55 +6,67 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { EarningsChartRecord, FilterOption } from "@/services/stats";
+import getTrendInfo from "@/utils/trendInfo";
+import { getFormattedLabel } from "@/utils/getFormattedLabel";
+import { useMemo } from "react";
+import { BiLineChart } from "react-icons/bi";
+import {
+  Bar,
+  CartesianGrid,
+  LabelList,
+  BarChart as RechartsBarChart,
+  XAxis,
+} from "recharts";
+import { H4, Label, Small } from "../typography";
+import ChartCard from "./chart-card";
 
-// Chart data (same as your screenshot)
-const chartData = [
-  { month: "January", desktop: 186 },
-  { month: "February", desktop: 305 },
-  { month: "March", desktop: 237 },
-  { month: "April", desktop: 73 },
-  { month: "May", desktop: 209 },
-  { month: "June", desktop: 214 },
-];
+type BarChartProps = {
+  filter: FilterOption;
+  earnings: EarningsChartRecord;
+};
 
-// Signature color config
-const chartConfig = {
-  desktop: {
-    label: "Desktop",
-    color: "hsl(var(--primary))", 
-  },
-} satisfies ChartConfig;
+const BarChart = ({ filter, earnings }: BarChartProps) => {
+  const chartData = useMemo(() => earnings.record, [earnings]);
+  const formattedData = chartData.map((item) => ({
+    ...item,
+    value: getFormattedLabel(item.value, filter),
+  }));
 
-const BarChart = () => {
+  const chartConfig: ChartConfig = {
+    earnings: {
+      label: "Earnings",
+      color: "hsl(var(--primary))",
+    },
+  };
+  const trendInfo = getTrendInfo(earnings.change);
   return (
-    <ChartCard className="space-y-4 h-full bg-background">
+    <ChartCard className="space-y-4 h-full">
       <div className="flex items-center justify-between capitalize">
         <div className="flex flex-col">
-          <Small>performance</Small>
-          <H4>Total ADs</H4>
+          <Small>Performance</Small>
+          <H4>{filter} earnings</H4>
         </div>
       </div>
-      <ChartCard className="bg-secondary border p-0">
+      <ChartCard className="bg-card border p-0">
         <Small className="flex items-center gap-2 border-b p-2 capitalize">
           <BiLineChart />
           <span>chart</span>
         </Small>
         <div className="p-4">
           <div>
-            <H4>Bar chart</H4>
-            <Small>Showing total visitors</Small>
+            <H4>Total Earnings</H4>
+            <Small>Showing {filter} earnings</Small>
           </div>
           <ChartContainer config={chartConfig}>
             <RechartsBarChart
               accessibilityLayer
-              data={chartData}
-              margin={{
-                top: 20,
-              }}
+              data={formattedData}
+              margin={{ top: 20 }}
             >
               <CartesianGrid vertical={false} />
               <XAxis
-                dataKey="month"
+                dataKey="value"
                 tickLine={false}
                 tickMargin={10}
                 axisLine={false}
@@ -75,7 +76,11 @@ const BarChart = () => {
                 cursor={false}
                 content={<ChartTooltipContent hideLabel />}
               />
-              <Bar dataKey="desktop" fill="var(--color-signature)" radius={8}>
+              <Bar
+                dataKey="totalEarning"
+                fill="var(--color-signature)"
+                radius={8}
+              >
                 <LabelList
                   position="top"
                   offset={12}
@@ -86,8 +91,8 @@ const BarChart = () => {
             </RechartsBarChart>
           </ChartContainer>
           <div>
-            <Label>Trending up by 12%</Label>
-            <Small>jan - may</Small>
+            <Label>{trendInfo.message}</Label>
+            <Small>Period: {filter}</Small>
           </div>
         </div>
       </ChartCard>
